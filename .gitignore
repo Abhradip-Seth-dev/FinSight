@@ -1,0 +1,6 @@
+.env
+uploads/
+__pycache__
+bert_model/
+*.csv
+.DS_Store

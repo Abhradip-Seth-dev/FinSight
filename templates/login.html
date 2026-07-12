@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinSight — Login</title>
+    <meta name="description" content="Login to FinSight Transaction Monitoring Platform">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg-dark: #0b0f1a;
+            --surface: rgba(255,255,255,0.06);
+            --border: rgba(255,255,255,0.12);
+            --accent: #6c63ff;
+            --accent-2: #a78bfa;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warn: #f59e0b;
+            --text: #e8eaf0;
+            --muted: #8892a4;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-dark);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.35;
+            animation: float 12s ease-in-out infinite alternate;
+            pointer-events: none;
+        }
+        .orb-1 { width: 420px; height: 420px; background: #6c63ff; top: -120px; left: -100px; }
+        .orb-2 { width: 320px; height: 320px; background: #a78bfa; bottom: -80px; right: -60px; animation-delay: -4s; }
+        .orb-3 { width: 200px; height: 200px; background: #10b981; top: 40%; left: 55%; animation-delay: -8s; }
+
+        @keyframes float {
+            from { transform: translate(0,0) scale(1); }
+            to   { transform: translate(30px, 20px) scale(1.08); }
+        }
+
+        .card {
+            position: relative;
+            background: rgba(15,20,40,0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 44px 40px;
+            width: 420px;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.08);
+            animation: slideUp 0.6s cubic-bezier(0.16,1,0.3,1) both;
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(32px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 28px;
+        }
+        .brand-icon {
+            width: 40px; height: 40px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px;
+        }
+        .brand-name { font-size: 20px; font-weight: 700; color: var(--text); letter-spacing: -0.5px; }
+        .brand-sub  { font-size: 11px; color: var(--muted); font-weight: 400; margin-top: 1px; }
+
+        h2 { font-size: 22px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+        .subtitle { font-size: 13px; color: var(--muted); margin-bottom: 28px; }
+
+        label {
+            display: block;
+            font-size: 11.5px;
+            font-weight: 600;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 6px;
+        }
+
+        .input-wrap { position: relative; margin-bottom: 18px; }
+        .input-wrap .icon {
+            position: absolute;
+            left: 14px; top: 50%;
+            transform: translateY(-50%);
+            font-size: 15px;
+            pointer-events: none;
+            opacity: 0.5;
+        }
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 12px 14px 12px 40px;
+            background: rgba(255,255,255,0.05);
+            border: 1.5px solid rgba(255,255,255,0.12);
+            border-radius: 10px;
+            color: var(--text);
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+            outline: none;
+            transition: border-color 0.25s, background 0.25s, box-shadow 0.25s;
+        }
+        input[type="text"]:focus, input[type="password"]:focus {
+            border-color: var(--accent);
+            background: rgba(108,99,255,0.08);
+            box-shadow: 0 0 0 3px rgba(108,99,255,0.18);
+        }
+        input.state-success { border-color: var(--success); }
+        input.state-error   { border-color: var(--danger); }
+        input.state-warn    { border-color: var(--warn); }
+
+        .msg {
+            font-size: 12.5px;
+            padding: 10px 14px;
+            border-radius: 8px;
+            margin-bottom: 14px;
+            display: none;
+            font-weight: 500;
+        }
+        .msg.success { background: rgba(16,185,129,0.15); color: #6ee7b7; border: 1px solid rgba(16,185,129,0.3); display: block; }
+        .msg.error   { background: rgba(239,68,68,0.15);  color: #fca5a5; border: 1px solid rgba(239,68,68,0.3);  display: block; }
+        .msg.warn    { background: rgba(245,158,11,0.15); color: #fcd34d; border: 1px solid rgba(245,158,11,0.3); display: block; }
+
+        .forgot-row { display: flex; justify-content: flex-end; margin-top: -10px; margin-bottom: 22px; }
+        .forgot-row a { font-size: 12px; color: var(--accent-2); cursor: pointer; text-decoration: none; transition: opacity 0.2s; }
+        .forgot-row a:hover { opacity: 0.7; }
+
+        .btn-primary {
+            width: 100%;
+            padding: 13px;
+            background: linear-gradient(135deg, var(--accent), #8b5cf6);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-bottom: 12px;
+            letter-spacing: 0.3px;
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(108,99,255,0.4); }
+        .btn-primary:active { transform: translateY(0); }
+
+        .btn-outline {
+            width: 100%;
+            padding: 12px;
+            background: transparent;
+            color: var(--text);
+            border: 1.5px solid rgba(255,255,255,0.2);
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: border-color 0.2s, background 0.2s;
+        }
+        .btn-outline:hover { border-color: var(--accent-2); background: rgba(167,139,250,0.08); }
+
+        .divider { display: flex; align-items: center; gap: 10px; margin: 16px 0; }
+        .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+        .divider span { font-size: 12px; color: var(--muted); white-space: nowrap; }
+
+        .modal-bg {
+            display: none;
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(4px);
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+        .modal-bg.show { display: flex; }
+        .modal {
+            background: #111827;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 32px;
+            width: 360px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+            animation: slideUp 0.4s cubic-bezier(0.16,1,0.3,1) both;
+        }
+        .modal h3 { font-size: 17px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+        .modal p.modal-sub { font-size: 12.5px; color: var(--muted); margin-bottom: 20px; }
+        .modal input {
+            width: 100%;
+            padding: 12px 14px;
+            background: rgba(255,255,255,0.05);
+            border: 1.5px solid rgba(255,255,255,0.12);
+            border-radius: 10px;
+            color: var(--text);
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+            outline: none;
+            margin-bottom: 14px;
+            transition: border-color 0.25s;
+        }
+        .modal input:focus { border-color: var(--accent); }
+        .modal-btns { display: flex; gap: 10px; margin-top: 4px; }
+        .modal-btns button { flex: 1; }
+        .btn-cancel {
+            padding: 11px;
+            background: transparent;
+            border: 1.5px solid rgba(255,255,255,0.15);
+            border-radius: 10px;
+            color: var(--muted);
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+        .btn-cancel:hover { border-color: rgba(255,255,255,0.35); }
+        .btn-submit {
+            padding: 11px;
+            background: linear-gradient(135deg, var(--accent), #8b5cf6);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .btn-submit:hover { opacity: 0.85; }
+    </style>
+</head>
+<body>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <div class="card">
+        <div class="brand">
+            <div class="brand-icon">📊</div>
+            <div>
+                <div class="brand-name">FinSight</div>
+                <div class="brand-sub">Transaction Monitoring</div>
+            </div>
+        </div>
+
+        <h2>Welcome back</h2>
+        <p class="subtitle">Sign in to your account to continue</p>
+
+        <div class="msg" id="msg"></div>
+
+        <label for="username">Username</label>
+        <div class="input-wrap">
+            <span class="icon">👤</span>
+            <input type="text" id="username" placeholder="Enter your username">
+        </div>
+
+        <label for="password">Password</label>
+        <div class="input-wrap">
+            <span class="icon">🔒</span>
+            <input type="password" id="password" placeholder="Enter your password">
+        </div>
+
+        <div class="forgot-row"><a onclick="openForgot()">Forgot Password?</a></div>
+
+        <button class="btn-primary" id="login-btn" onclick="doLogin()">Sign In</button>
+
+        <div class="divider"><span>or</span></div>
+
+        <button class="btn-outline" id="register-btn" onclick="openReg()">Create New Account</button>
+    </div>
+
+    <!-- Forgot Modal -->
+    <div class="modal-bg" id="forgotModal">
+        <div class="modal">
+            <h3>Reset Password</h3>
+            <p class="modal-sub">Contact your admin with your username to reset.</p>
+            <input type="text" id="forgot-user" placeholder="Enter your username">
+            <div class="msg" id="forgot-msg"></div>
+            <div class="modal-btns">
+                <button class="btn-cancel" onclick="closeModal('forgotModal')">Cancel</button>
+                <button class="btn-submit" id="forgot-submit" onclick="doForgot()">Submit</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div class="modal-bg" id="regModal">
+        <div class="modal">
+            <h3>Create Account</h3>
+            <p class="modal-sub">Fill in the details below to register.</p>
+            <input type="text" id="reg-user" placeholder="Choose a username">
+            <input type="password" id="reg-pass" placeholder="Choose a password">
+            <input type="password" id="reg-confirm" placeholder="Confirm password">
+            <div class="msg" id="reg-msg"></div>
+            <div class="modal-btns">
+                <button class="btn-cancel" onclick="closeModal('regModal')">Cancel</button>
+                <button class="btn-submit" id="reg-submit" onclick="doReg()">Register</button>
+            </div>
+        </div>
+    </div>
+
+<script>
+function setInputState(state, text) {
+    const inputs = ['username','password'].map(id => document.getElementById(id));
+    const classMap = { red: 'state-error', green: 'state-success', yellow: 'state-warn' };
+    const msgMap   = { red: 'error', green: 'success', yellow: 'warn' };
+    inputs.forEach(el => { el.className = classMap[state] || ''; });
+    const msg = document.getElementById('msg');
+    msg.className = 'msg ' + (msgMap[state] || '');
+    msg.textContent = text;
+}
+
+function doLogin() {
+    const u = document.getElementById('username').value.trim();
+    const p = document.getElementById('password').value.trim();
+    if (!u || !p) { setInputState('red', 'Please enter both username and password.'); return; }
+    setInputState('yellow', 'Verifying credentials…');
+    fetch('/login', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({username: u, password: p})
+    })
+    .then(r => r.json())
+    .then(d => {
+        if (d.status === 'success') {
+            setInputState('green', 'Login successful! Redirecting…');
+            setTimeout(() => window.location.href = '/dashboard', 900);
+        } else {
+            setInputState('red', 'Invalid username or password.');
+        }
+    })
+    .catch(() => setInputState('red', 'Connection error. Please try again.'));
+}
+
+function openForgot() { document.getElementById('forgotModal').classList.add('show'); }
+function openReg()    { document.getElementById('regModal').classList.add('show'); }
+function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+
+function doForgot() {
+    const u = document.getElementById('forgot-user').value.trim();
+    const msg = document.getElementById('forgot-msg');
+    if (!u) { msg.className = 'msg error'; msg.textContent = 'Please enter your username.'; return; }
+    msg.className = 'msg success'; msg.textContent = 'Request noted. Contact admin for reset.';
+}
+
+function doReg() {
+    const u   = document.getElementById('reg-user').value.trim();
+    const p   = document.getElementById('reg-pass').value.trim();
+    const c   = document.getElementById('reg-confirm').value.trim();
+    const msg = document.getElementById('reg-msg');
+    if (!u || !p || !c) { msg.className = 'msg error'; msg.textContent = 'All fields are required.'; return; }
+    if (p !== c) { msg.className = 'msg error'; msg.textContent = 'Passwords do not match.'; return; }
+    msg.className = 'msg warn'; msg.textContent = 'Registering…';
+    fetch('/register', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({username: u, password: p})
+    })
+    .then(r => r.json())
+    .then(d => {
+        if (d.status === 'success') {
+            msg.className = 'msg success'; msg.textContent = 'Account created! You can now sign in.';
+            setTimeout(() => closeModal('regModal'), 2200);
+        } else if (d.status === 'exists') {
+            msg.className = 'msg error'; msg.textContent = 'Username already taken. Try another.';
+        } else {
+            msg.className = 'msg error'; msg.textContent = 'Registration failed. Please try again.';
+        }
+    });
+}
+
+document.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && !document.querySelector('.modal-bg.show')) doLogin();
+});
+</script>
+</body>
+</html>
