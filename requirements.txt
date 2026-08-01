@@ -4,7 +4,6 @@ transformers
 opencv-python-headless
 pytesseract
 pdf2image
-mysql-connector-python
 pandas
 openpyxl
 scikit-learn

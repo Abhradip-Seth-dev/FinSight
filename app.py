@@ -1,14 +1,11 @@
-"""Flask Web Server for user authentication and document analysis tasks.
-"""
+"""Flask Web Server for financial document analysis."""
 
 import logging
 import os
-import uuid
-from typing import Dict, Union
 
 from dotenv import load_dotenv
-import mysql.connector
-from flask import Flask, jsonify, redirect, render_template, request, session, Response
+from flask import Flask, jsonify, render_template, request, Response
+
 from ocr_utils import assess_salary_eligibility
 from train_bert import analyze_statement_transactions
 
@@ -20,125 +17,21 @@ logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 
 flask_app = Flask(__name__)
-flask_app.secret_key = "secret123"
+flask_app.secret_key = os.getenv("SECRET_KEY", "finsight-secret-key")
 
 # Ensure the uploads directory exists
 UPLOAD_DIRECTORY = "uploads"
 os.makedirs(UPLOAD_DIRECTORY, exist_ok=True)
 
 
-def get_database_connection() -> mysql.connector.MySQLConnection:
-    """Establish and return a connection to the MySQL database.
-
-    Returns:
-        A connection object for MySQL database.
-    """
-    return mysql.connector.connect(
-        host=os.getenv("DB_HOST", "localhost"),
-        user=os.getenv("DB_USER", "root"),
-        password=os.getenv("DB_PASSWORD", "somu2006"),
-        database=os.getenv("DB_NAME", "transaction_db"),
-    )
-
-
 @flask_app.route("/")
-def render_login_page() -> str:
-    """Render and return the portal login interface page.
+def render_dashboard_page() -> str:
+    """Render the main FinSight dashboard.
 
     Returns:
-        The rendered template of the login HTML page.
+        The rendered dashboard template.
     """
-    return render_template("login.html")
-
-
-@flask_app.route("/login", methods=["POST"])
-def handle_login() -> Response:
-    """Process user login requests by verifying credentials against the database.
-
-    Returns:
-        A JSON response signaling authentication success or failure.
-    """
-    request_payload = request.get_json()
-    logger.info(f"Login attempt initiated for username: {request_payload.get('username')}")
-
-    try:
-        db_connection = get_database_connection()
-        db_cursor = db_connection.cursor(dictionary=True)
-        db_cursor.execute(
-            "SELECT * FROM users WHERE username=%s AND password=%s",
-            (request_payload["username"], request_payload["password"]),
-        )
-        user_record = db_cursor.fetchone()
-        db_connection.close()
-
-        if user_record:
-            session["user"] = user_record
-            logger.info(f"Successful authentication for user: {user_record['username']}")
-            return jsonify(
-                {
-                    "status": "success",
-                    "username": user_record["username"],
-                    "date": str(user_record["created_date"]),
-                }
-            )
-
-        logger.warning(f"Failed authentication attempt for username: {request_payload.get('username')}")
-        return jsonify({"status": "error"})
-
-    except Exception as exc:
-        logger.error(f"Error during login authentication execution: {exc}", exc_info=True)
-        return jsonify({"status": "error", "msg": str(exc)})
-
-
-@flask_app.route("/register", methods=["POST"])
-def handle_registration() -> Response:
-    """Process user registration requests by verifying user uniqueness.
-
-    Returns:
-        A JSON response signaling account creation success, name conflict, or failure.
-    """
-    request_payload = request.get_json()
-    logger.info(f"Registration request received for username: {request_payload.get('username')}")
-
-    try:
-        db_connection = get_database_connection()
-        db_cursor = db_connection.cursor()
-        
-        # Verify if username already exists in database
-        db_cursor.execute("SELECT * FROM users WHERE username=%s", (request_payload["username"],))
-        if db_cursor.fetchone():
-            db_connection.close()
-            logger.warning(f"Registration aborted. Username already taken: {request_payload.get('username')}")
-            return jsonify({"status": "exists"})
-
-        # Generate a unique User ID identifier
-        user_id = "U" + str(uuid.uuid4())[:8].upper()  # Generates e.g. U3F2A1B9
-        db_cursor.execute(
-            "INSERT INTO users (uid, username, password) VALUES (%s, %s, %s)",
-            (user_id, request_payload["username"], request_payload["password"]),
-        )
-        db_connection.commit()
-        db_connection.close()
-
-        logger.info(f"Account registered successfully. User ID: {user_id}")
-        return jsonify({"status": "success"})
-
-    except Exception as exc:
-        logger.error(f"Error during registration execution: {exc}", exc_info=True)
-        return jsonify({"status": "error", "msg": str(exc)})
-
-
-@flask_app.route("/dashboard")
-def render_dashboard_page() -> Union[Response, str]:
-    """Render the dashboard interface for authenticated sessions.
-
-    Returns:
-        The rendered dashboard template or a redirect to the login index.
-    """
-    if "user" not in session:
-        logger.info("Unauthorized access attempt. Redirecting to login.")
-        return redirect("/")
-    return render_template("dashboard.html", user=session["user"])
+    return render_template("dashboard.html")
 
 
 @flask_app.route("/upload", methods=["POST"])
@@ -162,7 +55,7 @@ def handle_file_upload() -> Response:
     uploaded_file.save(destination_file_path)
     logger.info(f"File uploaded successfully to: {destination_file_path}")
 
-    # Process based on selected document options
+    # Process based on selected document options, always clean up after
     try:
         if document_type == "Passslip":
             try:
@@ -188,22 +81,10 @@ def handle_file_upload() -> Response:
 
         return jsonify({"status": "success"})
     finally:
-        # Clean up the file to save disk space
+        # Clean up the uploaded file to preserve disk space
         if os.path.exists(destination_file_path):
             os.remove(destination_file_path)
-            logger.info(f"Cleaned up file: {destination_file_path}")
-
-
-@flask_app.route("/logout")
-def handle_logout() -> Response:
-    """Clear session data and redirect user back to the login interface page.
-
-    Returns:
-        A redirection response to the index root route.
-    """
-    logger.info(f"Session terminated for user: {session.get('user', {}).get('username')}")
-    session.clear()
-    return redirect("/")
+            logger.info(f"Cleaned up uploaded file: {destination_file_path}")
 
 
 if __name__ == "__main__":

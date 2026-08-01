@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FinSight — Dashboard</title>
-    <meta name="description" content="FinSight Transaction Monitoring Dashboard">
+    <title>FinSight — Financial Document Analysis</title>
+    <meta name="description" content="FinSight: Free AI-powered financial document analysis. Upload a payslip or bank statement for instant salary eligibility checks and transaction breakdowns.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -81,85 +81,67 @@
             color: var(--muted);
         }
 
-        .nav-right {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .nav-user {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 6px 14px;
-        }
-
-        .nav-avatar {
-            width: 30px;
-            height: 30px;
-            background: linear-gradient(135deg, var(--accent), var(--accent-2));
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 13px;
-            font-weight: 700;
-            text-transform: uppercase;
-            color: white;
-        }
-
-        .nav-user-info {
-            line-height: 1.3;
-        }
-
-        .nav-user-name {
-            font-size: 13px;
+        .nav-badge {
+            background: rgba(108, 99, 255, 0.18);
+            border: 1px solid rgba(108, 99, 255, 0.4);
+            color: var(--accent-2);
+            font-size: 11px;
             font-weight: 600;
-        }
-
-        .nav-user-date {
-            font-size: 10.5px;
-            color: var(--muted);
-        }
-
-        .btn-logout {
-            background: transparent;
-            border: 1.5px solid rgba(239, 68, 68, 0.4);
-            color: #fca5a5;
-            padding: 7px 16px;
-            border-radius: 8px;
-            font-size: 13px;
-            font-weight: 500;
-            font-family: 'Inter', sans-serif;
-            cursor: pointer;
-            transition: background 0.2s, border-color 0.2s;
-        }
-
-        .btn-logout:hover {
-            background: rgba(239, 68, 68, 0.12);
-            border-color: rgba(239, 68, 68, 0.7);
+            padding: 4px 10px;
+            border-radius: 20px;
+            letter-spacing: 0.3px;
         }
 
         /* ── Main Layout ── */
         .main {
-            max-width: 840px;
+            max-width: 860px;
             margin: 0 auto;
-            padding: 36px 24px 60px;
+            padding: 40px 24px 80px;
         }
 
-        .page-title {
-            font-size: 24px;
+        .hero {
+            text-align: center;
+            margin-bottom: 44px;
+        }
+
+        .hero-title {
+            font-size: 32px;
             font-weight: 700;
-            margin-bottom: 4px;
+            letter-spacing: -0.8px;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #e8eaf0, var(--accent-2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
-        .page-sub {
-            font-size: 13.5px;
+        .hero-sub {
+            font-size: 15px;
             color: var(--muted);
-            margin-bottom: 32px;
+            max-width: 520px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* ── Feature pills ── */
+        .feature-pills {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 18px;
+            flex-wrap: wrap;
+        }
+
+        .pill {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 5px 14px;
+            font-size: 12px;
+            color: var(--muted);
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
         /* ── Step cards ── */
@@ -203,13 +185,8 @@
             margin: 0 auto 8px;
         }
 
-        .step-card.active .step-num {
-            background: var(--accent);
-        }
-
-        .step-card.done .step-num {
-            background: var(--success);
-        }
+        .step-card.active .step-num { background: var(--accent); }
+        .step-card.done .step-num { background: var(--success); }
 
         .step-label {
             font-size: 12px;
@@ -217,20 +194,15 @@
             color: var(--muted);
         }
 
-        .step-card.active .step-label {
-            color: var(--text);
-        }
-
-        .step-card.done .step-label {
-            color: #6ee7b7;
-        }
+        .step-card.active .step-label { color: var(--text); }
+        .step-card.done .step-label { color: #6ee7b7; }
 
         /* ── Upload card ── */
         .upload-card {
             background: var(--surface);
             border: 1px solid var(--border);
             border-radius: 16px;
-            padding: 28px 28px;
+            padding: 28px;
         }
 
         .section-title {
@@ -253,7 +225,7 @@
             background: rgba(255, 255, 255, 0.04);
             border: 1.5px solid var(--border);
             border-radius: 12px;
-            padding: 14px 10px;
+            padding: 18px 14px;
             text-align: center;
             cursor: pointer;
             transition: border-color 0.2s, background 0.2s, transform 0.15s;
@@ -269,21 +241,18 @@
             background: rgba(108, 99, 255, 0.12);
         }
 
-        .doc-icon {
-            font-size: 22px;
-            margin-bottom: 6px;
-        }
+        .doc-icon { font-size: 26px; margin-bottom: 8px; }
 
         .doc-name {
-            font-size: 12px;
+            font-size: 13px;
             font-weight: 600;
             color: var(--text);
         }
 
         .doc-hint {
-            font-size: 10.5px;
+            font-size: 11px;
             color: var(--muted);
-            margin-top: 2px;
+            margin-top: 3px;
         }
 
         /* ── Drop zone ── */
@@ -291,7 +260,7 @@
             display: none;
             border: 2px dashed rgba(108, 99, 255, 0.4);
             border-radius: 14px;
-            padding: 36px 20px;
+            padding: 40px 20px;
             text-align: center;
             background: rgba(108, 99, 255, 0.04);
             transition: border-color 0.25s, background 0.25s;
@@ -300,9 +269,7 @@
             position: relative;
         }
 
-        .drop-zone.show {
-            display: block;
-        }
+        .drop-zone.show { display: block; }
 
         .drop-zone:hover,
         .drop-zone.drag-over {
@@ -319,10 +286,7 @@
             height: 100%;
         }
 
-        .drop-icon {
-            font-size: 32px;
-            margin-bottom: 10px;
-        }
+        .drop-icon { font-size: 36px; margin-bottom: 12px; }
 
         .drop-title {
             font-size: 14px;
@@ -331,22 +295,19 @@
             margin-bottom: 4px;
         }
 
-        .drop-sub {
-            font-size: 12px;
-            color: var(--muted);
-        }
+        .drop-sub { font-size: 12px; color: var(--muted); }
 
         .drop-file-name {
             font-size: 12.5px;
             color: var(--accent-2);
-            margin-top: 8px;
+            margin-top: 10px;
             font-weight: 500;
         }
 
         .btn-upload {
-            display: block;
+            display: none;
             width: 100%;
-            padding: 13px;
+            padding: 14px;
             background: linear-gradient(135deg, var(--accent), #8b5cf6);
             color: white;
             border: none;
@@ -356,17 +317,41 @@
             font-family: 'Inter', sans-serif;
             cursor: pointer;
             transition: transform 0.2s, box-shadow 0.2s;
-            display: none;
         }
 
-        .btn-upload.show {
-            display: block;
-        }
+        .btn-upload.show { display: block; }
 
         .btn-upload:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(108, 99, 255, 0.35);
         }
+
+        .btn-upload:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* ── Spinner ── */
+        .spinner-wrap {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 18px 0;
+            color: var(--muted);
+            font-size: 13.5px;
+        }
+        .spinner-wrap.show { display: flex; }
+        .spinner {
+            width: 22px;
+            height: 22px;
+            border: 3px solid rgba(108, 99, 255, 0.25);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
         /* ── Result area ── */
         .result-msg {
@@ -380,15 +365,8 @@
         }
 
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(6px);
-            }
-
-            to {
-                opacity: 1;
-                transform: none;
-            }
+            from { opacity: 0; transform: translateY(6px); }
+            to   { opacity: 1; transform: none; }
         }
 
         .result-msg.success {
@@ -421,13 +399,8 @@
             animation: fadeIn 0.5s ease;
         }
 
-        #pie-section {
-            margin-top: 28px;
-        }
-
-        #bar-section {
-            margin-top: 24px;
-        }
+        #pie-section { margin-top: 28px; }
+        #bar-section { margin-top: 24px; }
 
         #pie-section h4, #bar-section h4 {
             font-size: 14px;
@@ -439,15 +412,8 @@
             gap: 8px;
         }
 
-        #pie-section h4::before {
-            content: '🍩';
-            font-size: 16px;
-        }
-
-        #bar-section h4::before {
-            content: '📊';
-            font-size: 16px;
-        }
+        #pie-section h4::before { content: '🍩'; font-size: 16px; }
+        #bar-section h4::before { content: '📊'; font-size: 16px; }
 
         .chart-wrap {
             display: flex;
@@ -479,46 +445,61 @@
             flex-shrink: 0;
         }
 
-        .legend-label {
-            color: var(--muted);
-        }
+        .legend-label { color: var(--muted); }
 
         .legend-val {
             font-weight: 600;
             color: var(--text);
             margin-left: auto;
         }
+
+        /* ── Footer ── */
+        .footer {
+            text-align: center;
+            padding: 28px;
+            color: var(--muted);
+            font-size: 12px;
+            border-top: 1px solid var(--border);
+            margin-top: 60px;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 600px) {
+            .step-row { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+            .step-card { padding: 12px 8px; }
+            .hero-title { font-size: 24px; }
+            .navbar { padding: 0 16px; }
+            .main { padding: 24px 16px 60px; }
+        }
     </style>
 </head>
 
 <body>
-
     <!-- Navbar -->
     <nav class="navbar">
         <div class="nav-brand">
             <div class="nav-brand-icon">📊</div>
             <div>
                 <div class="nav-brand-name">FinSight</div>
-                <div class="nav-brand-sub">Transaction Monitoring</div>
+                <div class="nav-brand-sub">AI Document Analysis</div>
             </div>
         </div>
-        <div class="nav-right">
-            <div class="nav-user">
-                <div class="nav-avatar" id="user-avatar">?</div>
-                <div class="nav-user-info">
-                    <div class="nav-user-name">{{ user.username }}</div>
-                    <div class="nav-user-date">Since {{ user.created_date }}</div>
-                </div>
-            </div>
-            <button class="btn-logout" onclick="window.location.href='/logout'">Sign Out</button>
-        </div>
+        <div class="nav-badge">Free to Use</div>
     </nav>
 
     <!-- Main -->
     <div class="main">
-        <div class="page-title">Document Analysis</div>
-        <p class="page-sub">Upload a document to analyse its contents and check eligibility or transaction breakdown.
-        </p>
+
+        <!-- Hero -->
+        <div class="hero">
+            <h1 class="hero-title">AI-Powered Financial Analysis</h1>
+            <p class="hero-sub">Upload a payslip or bank statement and get instant salary eligibility checks and intelligent transaction breakdowns — no sign-up required.</p>
+            <div class="feature-pills">
+                <span class="pill">🔒 No data stored</span>
+                <span class="pill">⚡ BERT-powered NLP</span>
+                <span class="pill">📄 PDF, JPG, PNG, CSV, Excel</span>
+            </div>
+        </div>
 
         <!-- Step indicators -->
         <div class="step-row">
@@ -543,24 +524,30 @@
                 <div class="doc-option" id="opt-payslip" onclick="selectDoc('Passslip')">
                     <div class="doc-icon">💰</div>
                     <div class="doc-name">Payslip</div>
-                    <div class="doc-hint">Salary eligibility check</div>
+                    <div class="doc-hint">Salary eligibility check via OCR</div>
                 </div>
                 <div class="doc-option" id="opt-bank" onclick="selectDoc('Bank Statement')">
                     <div class="doc-icon">🏦</div>
                     <div class="doc-name">Bank Statement</div>
-                    <div class="doc-hint">Transaction breakdown</div>
+                    <div class="doc-hint">AI transaction category breakdown</div>
                 </div>
             </div>
 
             <div class="drop-zone" id="drop-zone">
-                <input type="file" id="file-input" accept=".pdf,.jpg,.jpeg,.png" onchange="onFileSelected(this)">
+                <input type="file" id="file-input" accept=".pdf,.jpg,.jpeg,.png,.csv,.xlsx,.xls,.txt" onchange="onFileSelected(this)">
                 <div class="drop-icon">📂</div>
                 <div class="drop-title">Drag & drop your file here</div>
-                <div class="drop-sub">or click to browse — PDF, JPG, PNG supported</div>
+                <div class="drop-sub" id="drop-formats">or click to browse</div>
                 <div class="drop-file-name" id="file-name-label"></div>
             </div>
 
-            <button class="btn-upload" id="upload-btn" onclick="doUpload()">Analyse Document</button>
+            <button class="btn-upload" id="upload-btn" onclick="doUpload()">Analyse Document →</button>
+
+            <!-- Spinner -->
+            <div class="spinner-wrap" id="spinner">
+                <div class="spinner"></div>
+                <span>Analysing your document… this may take a moment</span>
+            </div>
 
             <div class="result-msg" id="upload-msg"></div>
 
@@ -569,15 +556,18 @@
         </div>
     </div>
 
+    <footer class="footer">
+        FinSight &mdash; AI Financial Document Analysis &bull; Files are deleted immediately after processing
+    </footer>
+
     <script>
         let selectedDoc = '';
-        const COLORS = ['#6c63ff', '#10b981', '#f59e0b', '#ef4444', '#3b82f6', '#ec4899', '#14b8a6'];
+        const COLORS = ['#6c63ff', '#10b981', '#f59e0b', '#ef4444', '#3b82f6', '#ec4899', '#14b8a6', '#f97316', '#84cc16'];
 
-        // Set avatar initials
-        (function () {
-            const name = '{{ user.username }}';
-            if (name) document.getElementById('user-avatar').textContent = name[0].toUpperCase();
-        })();
+        const FORMAT_HINTS = {
+            'Passslip': 'PDF, JPG, or PNG — max 10MB',
+            'Bank Statement': 'CSV, Excel, PDF, or TXT — max 10MB'
+        };
 
         function setStep(n) {
             for (let i = 1; i <= 3; i++) {
@@ -590,18 +580,16 @@
             selectedDoc = type;
             document.querySelectorAll('.doc-option').forEach(el => el.classList.remove('selected'));
             const map = { 'Passslip': 'opt-payslip', 'Bank Statement': 'opt-bank' };
-            const target = document.getElementById(map[type]);
-            if (target) target.classList.add('selected');
+            document.getElementById(map[type]).classList.add('selected');
 
+            // Reset state
             document.getElementById('drop-zone').classList.add('show');
             document.getElementById('upload-btn').classList.remove('show');
             document.getElementById('file-name-label').textContent = '';
             document.getElementById('file-input').value = '';
             document.getElementById('upload-msg').className = 'result-msg';
-            const ps = document.getElementById('pie-section');
-            ps.style.display = 'none'; ps.innerHTML = '';
-            const bs = document.getElementById('bar-section');
-            if (bs) { bs.style.display = 'none'; bs.innerHTML = ''; }
+            document.getElementById('drop-formats').textContent = 'or click to browse — ' + FORMAT_HINTS[type];
+            clearCharts();
             setStep(2);
         }
 
@@ -612,6 +600,13 @@
             }
         }
 
+        function clearCharts() {
+            const ps = document.getElementById('pie-section');
+            const bs = document.getElementById('bar-section');
+            ps.style.display = 'none'; ps.innerHTML = '';
+            bs.style.display = 'none'; bs.innerHTML = '';
+        }
+
         // Drag-over visual feedback
         const dz = document.getElementById('drop-zone');
         dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag-over'); });
@@ -620,7 +615,10 @@
             e.preventDefault(); dz.classList.remove('drag-over');
             const f = e.dataTransfer.files[0];
             if (f) {
-                document.getElementById('file-input').files; // can't set directly
+                // Assign the dropped file to the input
+                const dt = new DataTransfer();
+                dt.items.add(f);
+                document.getElementById('file-input').files = dt.files;
                 document.getElementById('file-name-label').textContent = '✓ ' + f.name;
                 document.getElementById('upload-btn').classList.add('show');
             }
@@ -632,11 +630,22 @@
             el.textContent = text;
         }
 
+        function setLoading(on) {
+            document.getElementById('spinner').className = 'spinner-wrap' + (on ? ' show' : '');
+            const btn = document.getElementById('upload-btn');
+            btn.disabled = on;
+            btn.textContent = on ? 'Analysing…' : 'Analyse Document →';
+        }
+
         function doUpload() {
             const fileInput = document.getElementById('file-input');
             const file = fileInput.files[0];
             if (!file) { showMsg('error', 'Please select a file first.'); return; }
-            showMsg('warn', 'Uploading and analysing… this may take a moment.');
+            if (!selectedDoc) { showMsg('error', 'Please choose a document type first.'); return; }
+
+            setLoading(true);
+            clearCharts();
+            document.getElementById('upload-msg').className = 'result-msg';
 
             const formData = new FormData();
             formData.append('file', file);
@@ -645,15 +654,9 @@
             fetch('/upload', { method: 'POST', body: formData })
                 .then(r => r.json())
                 .then(d => {
-                    console.log('Server response:', JSON.stringify(d));  // debug
+                    setLoading(false);
                     setStep(3);
-                    document.getElementById('pie-section').style.display = 'none';
-                    document.getElementById('pie-section').innerHTML = '';
-                    const bs = document.getElementById('bar-section');
-                    if (bs) {
-                        bs.style.display = 'none';
-                        bs.innerHTML = '';
-                    }
+
                     if (d.status === 'success') {
                         if (d.ocr) {
                             // ── Payslip / OCR result ──
@@ -661,7 +664,6 @@
                                 showMsg(d.ocr.eligible ? 'success' : 'error', d.ocr.message);
                                 const comps = d.ocr.components;
                                 if (comps && Object.keys(comps).length > 0) {
-                                    // components values are plain numbers
                                     drawChart(comps, 'Salary Breakdown');
                                 }
                             } else {
@@ -670,36 +672,28 @@
 
                         } else if (d.categories !== undefined) {
                             // ── Bank Statement result ──
-                            // analyze_bank_statement returns:
-                            //   { total_transactions: N, categories: { Cat: {count,total_amount}, … } }
-                            // app.py wraps this as  { status:'success', categories: <above> }
                             const raw = d.categories;
-
-                            // Unwrap nested structure
                             let cats = {};
                             let totalTxns = '';
+
                             if (raw && typeof raw === 'object') {
                                 if (raw.categories && typeof raw.categories === 'object') {
-                                    // Nested: { total_transactions, categories: {…} }
                                     cats = raw.categories;
                                     totalTxns = raw.total_transactions || '';
                                 } else if (raw.error) {
                                     showMsg('error', 'Analysis error: ' + raw.error);
                                     return;
                                 } else {
-                                    // Flat dict of category → number
                                     cats = raw;
                                 }
                             }
 
-                            showMsg('success', 'Bank Statement analysed successfully!' +
-                                (totalTxns ? ' (' + totalTxns + ' transactions)' : ''));
+                            showMsg('success', 'Bank Statement analysed!' +
+                                (totalTxns ? ' Found ' + totalTxns + ' transactions.' : ''));
 
-                            // Build chart data — handle both {count,total_amount} objects and plain numbers
                             const chartData = {};
                             for (const [k, v] of Object.entries(cats)) {
                                 if (typeof v === 'object' && v !== null) {
-                                    // Use total_amount if present (even if 0), else count
                                     const amt = v.hasOwnProperty('total_amount') ? v.total_amount : (v.count || 0);
                                     chartData[k] = Number(amt);
                                 } else {
@@ -713,23 +707,23 @@
                             } else {
                                 showMsg('warn', 'No category data to display. Check the uploaded file format.');
                             }
-
                         } else {
-                            showMsg('success', selectedDoc + ' uploaded successfully: ' + file.name);
+                            showMsg('success', 'Document uploaded and processed successfully.');
                         }
                     } else {
-                        showMsg('error', 'Upload failed. Please try again.');
+                        showMsg('error', d.msg || 'Upload failed. Please try again.');
                     }
                 })
                 .catch(err => {
+                    setLoading(false);
                     console.error('Upload error:', err);
-                    showMsg('error', 'Network error. Please check your connection.');
+                    showMsg('error', 'Network error. Please check your connection and try again.');
                 });
         }
 
         function drawChart(data, title) {
             const ps = document.getElementById('pie-section');
-            ps.innerHTML = '';  // clear first
+            ps.innerHTML = '';
 
             const labels = Object.keys(data).filter(k => Number(data[k]) > 0);
             if (labels.length === 0) { ps.style.display = 'none'; return; }
@@ -738,16 +732,13 @@
             const total = values.reduce((a, b) => a + b, 0);
             if (total === 0) { ps.style.display = 'none'; return; }
 
-            // Title
             const h4 = document.createElement('h4');
             h4.textContent = title;
             ps.appendChild(h4);
 
-            // Layout wrapper
             const wrap = document.createElement('div');
             wrap.className = 'chart-wrap';
 
-            // Canvas — append to DOM BEFORE drawing so browser sizing is correct
             const canvas = document.createElement('canvas');
             canvas.id = 'pieChart';
             canvas.width = 220;
@@ -755,7 +746,6 @@
             canvas.style.flexShrink = '0';
             wrap.appendChild(canvas);
 
-            // Legend
             const legend = document.createElement('div');
             legend.className = 'legend-list';
             labels.forEach((lbl, i) => {
@@ -776,11 +766,8 @@
             });
             wrap.appendChild(legend);
             ps.appendChild(wrap);
-
-            // Make section visible AFTER DOM is built
             ps.style.display = 'block';
 
-            // Draw donut chart — runs after element is in DOM
             requestAnimationFrame(() => {
                 const ctx = canvas.getContext('2d');
                 const cx = 110, cy = 110, r = 95, inner = 55;
@@ -794,7 +781,6 @@
                     ctx.closePath();
                     ctx.fillStyle = COLORS[i % COLORS.length];
                     ctx.fill();
-                    // Segment separator
                     ctx.strokeStyle = '#0b0f1a';
                     ctx.lineWidth = 2;
                     ctx.stroke();
@@ -807,7 +793,6 @@
                 ctx.fillStyle = '#1a2235';
                 ctx.fill();
 
-                // Center text
                 ctx.fillStyle = '#e8eaf0';
                 ctx.font = 'bold 14px Inter, sans-serif';
                 ctx.textAlign = 'center';
@@ -818,26 +803,23 @@
 
         function drawBarChart(data, title) {
             const bs = document.getElementById('bar-section');
-            bs.innerHTML = ''; // clear first
+            bs.innerHTML = '';
 
             const labels = Object.keys(data).filter(k => Number(data[k]) > 0);
             if (labels.length === 0) { bs.style.display = 'none'; return; }
 
             const values = labels.map(l => Number(data[l]));
 
-            // Title
             const h4 = document.createElement('h4');
             h4.textContent = title;
             bs.appendChild(h4);
 
-            // Canvas wrapper to allow responsive scaling
             const canvasWrap = document.createElement('div');
             canvasWrap.style.width = '100%';
             canvasWrap.style.position = 'relative';
 
             const canvas = document.createElement('canvas');
             canvas.id = 'barChart';
-            // Set canvas size (double for high resolution on retina displays)
             canvas.width = 800;
             canvas.height = 400;
             canvas.style.width = '100%';
@@ -846,43 +828,32 @@
 
             canvasWrap.appendChild(canvas);
             bs.appendChild(canvasWrap);
-
             bs.style.display = 'block';
 
             requestAnimationFrame(() => {
                 const ctx = canvas.getContext('2d');
                 const width = canvas.width;
                 const height = canvas.height;
-
-                // Clear
                 ctx.clearRect(0, 0, width, height);
 
-                // Margin setup
                 const margin = { top: 40, right: 30, bottom: 100, left: 70 };
                 const chartWidth = width - margin.left - margin.right;
                 const chartHeight = height - margin.top - margin.bottom;
 
-                // Find max value and nice ceiling
                 const maxVal = Math.max(...values);
-                let niceMax = maxVal;
-                if (niceMax <= 0) niceMax = 10;
-
-                // Find nice steps (e.g., target 5 steps)
+                let niceMax = maxVal <= 0 ? 10 : maxVal;
                 const targetSteps = 5;
                 const rawStep = niceMax / targetSteps;
-                // Calculate next power of 10
                 const order = Math.pow(10, Math.floor(Math.log10(rawStep)));
                 let step = order;
                 if (rawStep / order > 5) step = 5 * order;
                 else if (rawStep / order > 2) step = 2 * order;
                 if (step < 1) step = 1;
-
                 niceMax = Math.ceil(niceMax / step) * step;
 
-                // Draw Y-axis grid lines and labels
                 ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
                 ctx.lineWidth = 1;
-                ctx.fillStyle = '#8892a4'; // var(--muted)
+                ctx.fillStyle = '#8892a4';
                 ctx.font = '12px Inter, sans-serif';
                 ctx.textAlign = 'right';
                 ctx.textBaseline = 'middle';
@@ -891,19 +862,13 @@
                 for (let i = 0; i <= divisions; i++) {
                     const val = i * step;
                     const y = margin.top + chartHeight - (val / niceMax) * chartHeight;
-
-                    // Grid line
                     ctx.beginPath();
                     ctx.moveTo(margin.left, y);
                     ctx.lineTo(margin.left + chartWidth, y);
                     ctx.stroke();
-
-                    // Label
-                    let labelText = val.toLocaleString();
-                    ctx.fillText(labelText, margin.left - 12, y);
+                    ctx.fillText(val.toLocaleString(), margin.left - 12, y);
                 }
 
-                // Draw X-axis line
                 ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
                 ctx.lineWidth = 1.5;
                 ctx.beginPath();
@@ -911,26 +876,21 @@
                 ctx.lineTo(margin.left + chartWidth, margin.top + chartHeight);
                 ctx.stroke();
 
-                // Draw Bars
                 const barGap = 20;
-                const totalGaps = barGap * (labels.length - 1);
-                const barWidth = (chartWidth - totalGaps) / labels.length;
+                const barWidth = (chartWidth - barGap * (labels.length - 1)) / labels.length;
 
                 labels.forEach((lbl, i) => {
                     const val = values[i];
                     const barHeight = (val / niceMax) * chartHeight;
                     const x = margin.left + i * (barWidth + barGap);
                     const y = margin.top + chartHeight - barHeight;
-
-                    // Draw bar with gradient and rounded top corners
-                    const gradient = ctx.createLinearGradient(x, y, x, margin.top + chartHeight);
                     const baseColor = COLORS[i % COLORS.length];
-                    gradient.addColorStop(0, baseColor);
-                    gradient.addColorStop(1, baseColor + '1a'); // fade to transparent-ish
 
+                    const gradient = ctx.createLinearGradient(x, y, x, margin.top + chartHeight);
+                    gradient.addColorStop(0, baseColor);
+                    gradient.addColorStop(1, baseColor + '1a');
                     ctx.fillStyle = gradient;
 
-                    // Rounded top corners
                     const radius = Math.min(8, barWidth / 2);
                     ctx.beginPath();
                     ctx.moveTo(x + radius, y);
@@ -942,26 +902,23 @@
                     ctx.quadraticCurveTo(x, y, x + radius, y);
                     ctx.closePath();
                     ctx.fill();
-
-                    // Draw border around the bar
                     ctx.strokeStyle = baseColor;
                     ctx.lineWidth = 1.5;
                     ctx.stroke();
 
-                    // Value label on top of the bar
-                    ctx.fillStyle = '#e8eaf0'; // var(--text)
+                    // Value label on top
+                    ctx.fillStyle = '#e8eaf0';
                     ctx.font = '600 11px Inter, sans-serif';
                     ctx.textAlign = 'center';
                     ctx.textBaseline = 'bottom';
-
                     let valStr = Number.isInteger(val) ? val.toLocaleString() : val.toLocaleString(undefined, { maximumFractionDigits: 2 });
                     ctx.fillText(valStr, x + barWidth / 2, y - 6);
 
                     // X-axis label rotated
                     ctx.save();
                     ctx.translate(x + barWidth / 2, margin.top + chartHeight + 12);
-                    ctx.rotate(Math.PI / 4); // 45 degrees
-                    ctx.fillStyle = '#8892a4'; // var(--muted)
+                    ctx.rotate(Math.PI / 4);
+                    ctx.fillStyle = '#8892a4';
                     ctx.font = '500 11px Inter, sans-serif';
                     ctx.textAlign = 'left';
                     ctx.textBaseline = 'middle';
