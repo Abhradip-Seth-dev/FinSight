@@ -6,10 +6,14 @@ import os
 import uuid
 from typing import Dict, Union
 
+from dotenv import load_dotenv
 import mysql.connector
 from flask import Flask, jsonify, redirect, render_template, request, session, Response
 from ocr_utils import assess_salary_eligibility
 from train_bert import analyze_statement_transactions
+
+# Load environment variables from .env file if present
+load_dotenv()
 
 # Configure logging
 logger = logging.getLogger(__name__)
@@ -30,10 +34,10 @@ def get_database_connection() -> mysql.connector.MySQLConnection:
         A connection object for MySQL database.
     """
     return mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="somu2006",
-        database="transaction_db",
+        host=os.getenv("DB_HOST", "localhost"),
+        user=os.getenv("DB_USER", "root"),
+        password=os.getenv("DB_PASSWORD", "somu2006"),
+        database=os.getenv("DB_NAME", "transaction_db"),
     )
 
 
@@ -159,29 +163,35 @@ def handle_file_upload() -> Response:
     logger.info(f"File uploaded successfully to: {destination_file_path}")
 
     # Process based on selected document options
-    if document_type == "Passslip":
-        try:
-            payslip_analysis_result = assess_salary_eligibility(destination_file_path)
-            return jsonify({"status": "success", "ocr": payslip_analysis_result})
-        except Exception as exc:
-            logger.error(f"Payslip processing failed for {destination_file_path}: {exc}", exc_info=True)
-            error_message = str(exc)
-            if "poppler" in error_message.lower() or "pdfinfo" in error_message.lower():
-                error_message = (
-                    "Poppler is not installed. Please install poppler using: "
-                    "brew install poppler  and restart the web server."
-                )
-            return jsonify({"status": "error", "msg": error_message})
+    try:
+        if document_type == "Passslip":
+            try:
+                payslip_analysis_result = assess_salary_eligibility(destination_file_path)
+                return jsonify({"status": "success", "ocr": payslip_analysis_result})
+            except Exception as exc:
+                logger.error(f"Payslip processing failed for {destination_file_path}: {exc}", exc_info=True)
+                error_message = str(exc)
+                if "poppler" in error_message.lower() or "pdfinfo" in error_message.lower():
+                    error_message = (
+                        "Poppler is not installed. Please install poppler using: "
+                        "brew install poppler  and restart the web server."
+                    )
+                return jsonify({"status": "error", "msg": error_message})
 
-    elif document_type == "Bank Statement":
-        try:
-            statement_analysis_result = analyze_statement_transactions(destination_file_path)
-            return jsonify({"status": "success", "categories": statement_analysis_result})
-        except Exception as exc:
-            logger.error(f"Bank statement analysis failed for {destination_file_path}: {exc}", exc_info=True)
-            return jsonify({"status": "error", "msg": str(exc)})
+        elif document_type == "Bank Statement":
+            try:
+                statement_analysis_result = analyze_statement_transactions(destination_file_path)
+                return jsonify({"status": "success", "categories": statement_analysis_result})
+            except Exception as exc:
+                logger.error(f"Bank statement analysis failed for {destination_file_path}: {exc}", exc_info=True)
+                return jsonify({"status": "error", "msg": str(exc)})
 
-    return jsonify({"status": "success"})
+        return jsonify({"status": "success"})
+    finally:
+        # Clean up the file to save disk space
+        if os.path.exists(destination_file_path):
+            os.remove(destination_file_path)
+            logger.info(f"Cleaned up file: {destination_file_path}")
 
 
 @flask_app.route("/logout")
